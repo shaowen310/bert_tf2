@@ -1,12 +1,9 @@
 from typing import List, Optional
 
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras import initializers
-from tensorflow.keras import activations
 
 
-class MultiHeadAttention(layers.Layer):
+class MultiHeadAttention(tf.keras.layers.Layer):
     """Performs multi-headed attention from `from_tensor` to `to_tensor`.
 
     This is an implementation of multi-headed attention based on "Attention
@@ -92,36 +89,36 @@ class MultiHeadAttention(layers.Layer):
         dense_units = self.num_attention_heads * self.size_per_head
 
         # `query_layer` = [?, ? -> N*H]
-        self.query_layer = layers.Dense(
+        self.query_layer = tf.keras.layers.Dense(
             dense_units,
             activation=self.query_act,
-            kernel_initializer=initializers.TruncatedNormal(
+            kernel_initializer=tf.keras.initializers.TruncatedNormal(
                 stddev=self.initializer_range
             ),
             name="query",
         )
 
         # `key_layer` = [?, ? -> N*H]
-        self.key_layer = layers.Dense(
+        self.key_layer = tf.keras.layers.Dense(
             dense_units,
             activation=self.key_act,
-            kernel_initializer=initializers.TruncatedNormal(
+            kernel_initializer=tf.keras.initializers.TruncatedNormal(
                 stddev=self.initializer_range
             ),
             name="key",
         )
 
         # `value_layer` = [?, ? -> N*H]
-        self.value_layer = layers.Dense(
+        self.value_layer = tf.keras.layers.Dense(
             dense_units,
             activation=self.value_act,
-            kernel_initializer=initializers.TruncatedNormal(
+            kernel_initializer=tf.keras.initializers.TruncatedNormal(
                 stddev=self.initializer_range
             ),
             name="value",
         )
 
-        self.dropout_layer = layers.Dropout(self.attention_dropout)
+        self.dropout_layer = tf.keras.layers.Dropout(self.attention_dropout)
 
     def build(self, input_shape):
         assert isinstance(input_shape, list) and 2 == len(input_shape)
@@ -272,9 +269,9 @@ class MultiHeadAttention(layers.Layer):
             "num_attention_heads": self.num_attention_heads,
             "size_per_head": self.size_per_head,
             "weight_initializer_range": self.initializer_range,
-            "query_activation": activations.serialize(self.query_act),
-            "key_activation": activations.serialize(self.key_act),
-            "value_activation": activations.serialize(self.value_act),
+            "query_activation": tf.keras.activations.serialize(self.query_act),
+            "key_activation": tf.keras.activations.serialize(self.key_act),
+            "value_activation": tf.keras.activations.serialize(self.value_act),
             "attention_dropout": self.attention_dropout,
         }
         base_config = super().get_config()

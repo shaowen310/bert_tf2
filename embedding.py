@@ -1,10 +1,7 @@
 import tensorflow as tf
 
-from tensorflow.keras import layers
-from tensorflow.keras import initializers
 
-
-class Embedding(layers.Layer):
+class Embedding(tf.keras.layers.Layer):
     """Looks up words embeddings for id tensor.
 
     Args:
@@ -31,7 +28,7 @@ class Embedding(layers.Layer):
 
         ## init variables
         self.embedding_table = tf.Variable(
-            initializers.TruncatedNormal(stddev=self.initializer_range)(
+            tf.keras.initializers.TruncatedNormal(stddev=self.initializer_range)(
                 [self.vocab_size, self.embedding_size]
             )
         )
@@ -53,7 +50,34 @@ class Embedding(layers.Layer):
         return dict(list(base_config.items())) + list(config.items())
 
 
-class PositionEmbedding(layers.Layer):
+class PositionalEmbedding(tf.keras.layers.Layer):
+    """Appends positional embeddings to a word embedding tensor.
+
+    Args:
+      input_tensor: float Tensor of shape [batch_size, seq_length, embedding_size].
+      use_token_type: bool. Whether to add embeddings for `token_type_ids`.
+      token_type_ids: (optional) int32 Tensor of shape [batch_size, seq_length].
+        Must be specified if `use_token_type` is True.
+      token_type_vocab_size: int. The vocabulary size of `token_type_ids`.
+      token_type_embedding_name: string. The name of the embedding table variable
+        for token type ids.
+      use_position_embeddings: bool. Whether to add position embeddings for the
+        position of each token in the sequence.
+      position_embedding_name: string. The name of the embedding table variable
+        for positional embeddings.
+      initializer_range: float. Range of the weight initialization.
+      max_position_embeddings: int. Maximum sequence length that might ever be
+        used with this model. This can be longer than the sequence length of
+        input_tensor, but cannot be shorter.
+      dropout_prob: float. Dropout probability applied to the final output tensor.
+
+    Returns:
+      float tensor with same shape as `input_tensor`.
+
+    Raises:
+      ValueError: One of the tensor shapes or input values is invalid.
+    """
+
     def __init__(
         self,
         max_position_embeddings=512,
@@ -69,7 +93,7 @@ class PositionEmbedding(layers.Layer):
 
         # init variables
         self.full_position_embeddings = tf.Variable(
-            initializers.TruncatedNormal(stddev=self.initializer_range)(
+            tf.keras.initializers.TruncatedNormal(stddev=self.initializer_range)(
                 [self.max_position_embeddings, self.embedding_size]
             )
         )
