@@ -6,7 +6,6 @@ from __future__ import print_function
 
 import argparse
 import collections
-import logging
 import random
 
 import tensorflow as tf
@@ -497,7 +496,7 @@ def truncate_seq_pair(tokens_a, tokens_b, max_num_tokens, rng):
 
 
 def main(args):
-    logger.setLevel(logging.INFO)
+    logger.setLevel(tf._logging.INFO)
 
     tokenizer = tokenization.FullTokenizer(
         vocab_file=args.vocab_file, do_lower_case=args.do_lower_case
