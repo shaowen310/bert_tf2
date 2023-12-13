@@ -1,0 +1,220 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 6 files
+Detected 16 issues that require attention
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+File: ./create_pretraining_data.py
+--------------------------------------------------------------------------------
+./create_pretraining_data.py:26:8: ERROR: Using member tf.flags in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+--------------------------------------------------------------------------------
+File: ./run_pretraining.py
+--------------------------------------------------------------------------------
+./run_pretraining.py:26:8: ERROR: Using member tf.flags in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+./run_pretraining.py:96:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+./run_pretraining.py:104:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+./run_pretraining.py:112:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+./run_pretraining.py:120:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+./run_pretraining.py:325:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+./run_pretraining.py:359:25: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+./run_pretraining.py:364:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+--------------------------------------------------------------------------------
+File: ./modelling.py
+--------------------------------------------------------------------------------
+./modelling.py:372:11: WARNING: tf.contrib.layers.layer_norm requires manual check. (Manual edit required) `tf.contrib.layers.layer_norm` has been deprecated, and its implementation has been integrated with `tf.keras.layers.LayerNormalization` in TensorFlow 2.0. Note that, the default value of `epsilon` is changed to `1e-3` in the new API from `1e-12`, and this may introduce numerical differences. Please check the new API and use that instead.
+./modelling.py:372:11: ERROR: Using member tf.contrib.layers.layer_norm in deprecated module tf.contrib. tf.contrib.layers.layer_norm cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+./modelling.py:420:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+./modelling.py:490:27: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+./modelling.py:508:39: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+--------------------------------------------------------------------------------
+File: ./optimization.py
+--------------------------------------------------------------------------------
+./optimization.py:121:16: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+./optimization.py:128:16: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+================================================================================
+Detailed log follows:
+
+================================================================================
+================================================================================
+Input tree: './'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file './create_pretraining_data.py'
+ outputting to './v2/create_pretraining_data.py'
+--------------------------------------------------------------------------------
+
+26:8: ERROR: Using member tf.flags in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+118:23: INFO: Renamed 'tf.python_io.TFRecordWriter' to 'tf.io.TFRecordWriter'
+166:12: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+167:12: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+179:16: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+186:4: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+219:13: INFO: Renamed 'tf.gfile.GFile' to 'tf.io.gfile.GFile'
+488:4: INFO: Renamed 'tf.logging.set_verbosity' to 'tf.compat.v1.logging.set_verbosity'
+488:29: INFO: Renamed 'tf.logging.INFO' to 'tf.compat.v1.logging.INFO'
+496:27: INFO: Renamed 'tf.gfile.Glob' to 'tf.io.gfile.glob'
+498:4: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+500:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+515:4: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+517:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+532:4: INFO: Renamed 'tf.app.run' to 'tf.compat.v1.app.run'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file './run_pretraining.py'
+ outputting to './v2/run_pretraining.py'
+--------------------------------------------------------------------------------
+
+26:8: ERROR: Using member tf.flags in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+96:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+104:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+112:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+120:0: ERROR: Using member tf.flags.DEFINE_string in deprecated module tf.flags. tf.flags and tf.app.flags have been removed, please use the argparse or absl modules if you need command line parsing.
+143:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+145:12: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+189:16: INFO: Renamed 'tf.trainable_variables' to 'tf.compat.v1.trainable_variables'
+201:20: INFO: Renamed 'tf.train.init_from_checkpoint' to 'tf.compat.v1.train.init_from_checkpoint'
+202:27: INFO: Renamed 'tf.train.Scaffold' to 'tf.compat.v1.train.Scaffold'
+206:16: INFO: Renamed 'tf.train.init_from_checkpoint' to 'tf.compat.v1.train.init_from_checkpoint'
+208:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+213:12: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+223:26: INFO: Renamed 'tf.contrib.tpu.TPUEstimatorSpec' to 'tf.compat.v1.estimator.tpu.TPUEstimatorSpec'
+247:37: INFO: tf.metrics.accuracy requires manual check. tf.metrics have been replaced with object oriented versions in TF 2.0 and after. The metric function calls have been converted to compat.v1 for backward compatibility. Please update these calls to the TF 2.0 versions.
+247:37: INFO: Renamed 'tf.metrics.accuracy' to 'tf.compat.v1.metrics.accuracy'
+252:38: INFO: tf.metrics.mean requires manual check. tf.metrics have been replaced with object oriented versions in TF 2.0 and after. The metric function calls have been converted to compat.v1 for backward compatibility. Please update these calls to the TF 2.0 versions.
+252:38: INFO: Renamed 'tf.metrics.mean' to 'tf.compat.v1.metrics.mean'
+263:41: INFO: tf.metrics.accuracy requires manual check. tf.metrics have been replaced with object oriented versions in TF 2.0 and after. The metric function calls have been converted to compat.v1 for backward compatibility. Please update these calls to the TF 2.0 versions.
+263:41: INFO: Renamed 'tf.metrics.accuracy' to 'tf.compat.v1.metrics.accuracy'
+266:42: INFO: tf.metrics.mean requires manual check. tf.metrics have been replaced with object oriented versions in TF 2.0 and after. The metric function calls have been converted to compat.v1 for backward compatibility. Please update these calls to the TF 2.0 versions.
+266:42: INFO: Renamed 'tf.metrics.mean' to 'tf.compat.v1.metrics.mean'
+289:26: INFO: Renamed 'tf.contrib.tpu.TPUEstimatorSpec' to 'tf.compat.v1.estimator.tpu.TPUEstimatorSpec'
+309:9: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+312:13: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+313:27: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+325:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+325:22: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+328:24: INFO: tf.zeros_initializer requires manual check. Initializers no longer have the dtype argument in the constructor or partition_info argument in the __call__ method.
+The calls have been converted to compat.v1 for safety (even though they may already have been correct).
+328:24: INFO: Renamed 'tf.zeros_initializer' to 'tf.compat.v1.zeros_initializer'
+358:9: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+359:25: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+359:25: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+364:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+364:22: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+365:50: INFO: tf.zeros_initializer requires manual check. Initializers no longer have the dtype argument in the constructor or partition_info argument in the __call__ method.
+The calls have been converted to compat.v1 for safety (even though they may already have been correct).
+365:50: INFO: Renamed 'tf.zeros_initializer' to 'tf.compat.v1.zeros_initializer'
+404:25: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+405:26: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+406:27: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+407:35: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+410:29: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+411:33: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+414:36: INFO: Renamed 'tf.FixedLenFeature' to 'tf.io.FixedLenFeature'
+430:16: INFO: Renamed 'tf.contrib.data.parallel_interleave' to 'tf.data.experimental.parallel_interleave'
+448:12: INFO: Renamed 'tf.contrib.data.map_and_batch' to 'tf.data.experimental.map_and_batch'
+462:14: INFO: Renamed 'tf.parse_single_example' to 'tf.io.parse_single_example'
+469:16: INFO: Changed tf.to_int32 call to tf.cast(..., dtype=tf.int32).
+476:4: INFO: Renamed 'tf.logging.set_verbosity' to 'tf.compat.v1.logging.set_verbosity'
+476:29: INFO: Renamed 'tf.logging.INFO' to 'tf.compat.v1.logging.INFO'
+483:4: INFO: Renamed 'tf.gfile.MakeDirs' to 'tf.io.gfile.makedirs'
+487:27: INFO: Renamed 'tf.gfile.Glob' to 'tf.io.gfile.glob'
+489:4: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+491:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+495:31: INFO: Renamed 'tf.contrib.cluster_resolver.TPUClusterResolver' to 'tf.distribute.cluster_resolver.TPUClusterResolver'
+499:18: INFO: Renamed 'tf.contrib.tpu.InputPipelineConfig' to 'tf.compat.v1.estimator.tpu.InputPipelineConfig'
+500:17: INFO: Renamed 'tf.contrib.tpu.RunConfig' to 'tf.compat.v1.estimator.tpu.RunConfig'
+505:19: INFO: Renamed 'tf.contrib.tpu.TPUConfig' to 'tf.compat.v1.estimator.tpu.TPUConfig'
+524:16: INFO: Renamed 'tf.contrib.tpu.TPUEstimator' to 'tf.compat.v1.estimator.tpu.TPUEstimator'
+533:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+534:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+544:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+545:8: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+557:13: INFO: Renamed 'tf.gfile.GFile' to 'tf.io.gfile.GFile'
+558:12: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+560:16: INFO: Renamed 'tf.logging.info' to 'tf.compat.v1.logging.info'
+568:4: INFO: Renamed 'tf.app.run' to 'tf.compat.v1.app.run'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file './__init__.py'
+ outputting to './v2/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file './modelling.py'
+ outputting to './v2/modelling.py'
+--------------------------------------------------------------------------------
+
+95:13: INFO: Renamed 'tf.gfile.GFile' to 'tf.io.gfile.GFile'
+175:13: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+176:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+202:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+232:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+236:37: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+366:13: INFO: Changing keep_prob arg of tf.nn.dropout to rate, and recomputing value.
+
+372:11: WARNING: tf.contrib.layers.layer_norm requires manual check. (Manual edit required) `tf.contrib.layers.layer_norm` has been deprecated, and its implementation has been integrated with `tf.keras.layers.LayerNormalization` in TensorFlow 2.0. Note that, the default value of `epsilon` is changed to `1e-3` in the new API from `1e-12`, and this may introduce numerical differences. Please check the new API and use that instead.
+372:11: ERROR: Using member tf.contrib.layers.layer_norm in deprecated module tf.contrib. tf.contrib.layers.layer_norm cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+386:11: INFO: tf.truncated_normal_initializer requires manual check. Initializers no longer have the dtype argument in the constructor or partition_info argument in the __call__ method.
+The calls have been converted to compat.v1 for safety (even though they may already have been correct).
+386:11: INFO: Renamed 'tf.truncated_normal_initializer' to 'tf.compat.v1.truncated_normal_initializer'
+420:22: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+420:22: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+490:27: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+490:27: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+506:20: INFO: tf.assert_less_equal requires manual check. tf.assert_less_equal has been changed to return None, the data argument has been removed, and arguments have been reordered.
+The calls have been converted to compat.v1 for safety (even though  they may already have been correct).
+506:20: INFO: Renamed 'tf.assert_less_equal' to 'tf.compat.v1.assert_less_equal'
+508:39: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+508:39: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+689:18: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+698:16: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+707:18: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+862:13: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+865:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+867:21: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+893:21: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+894:39: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+903:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+904:38: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+912:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+913:31: INFO: Renamed 'tf.layers.dense' to 'tf.compat.v1.layers.dense'
+1022:21: INFO: Renamed 'tf.get_variable_scope' to 'tf.compat.v1.get_variable_scope'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file './optimization.py'
+ outputting to './v2/optimization.py'
+--------------------------------------------------------------------------------
+
+27:18: INFO: Renamed 'tf.train.get_or_create_global_step' to 'tf.compat.v1.train.get_or_create_global_step'
+32:20: INFO: tf.train.polynomial_decay requires manual check. To use learning rate decay schedules with TensorFlow 2.0, switch to the schedules in `tf.keras.optimizers.schedules`.
+
+32:20: INFO: Renamed 'tf.train.polynomial_decay' to 'tf.compat.v1.train.polynomial_decay'
+71:20: INFO: Renamed 'tf.contrib.tpu.CrossShardOptimizer' to 'tf.compat.v1.tpu.CrossShardOptimizer'
+73:12: INFO: Renamed 'tf.trainable_variables' to 'tf.compat.v1.trainable_variables'
+89:31: INFO: Renamed 'tf.train.Optimizer' to 'tf.compat.v1.train.Optimizer'
+121:16: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+121:16: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+126:28: INFO: tf.zeros_initializer requires manual check. Initializers no longer have the dtype argument in the constructor or partition_info argument in the __call__ method.
+The calls have been converted to compat.v1 for safety (even though they may already have been correct).
+126:28: INFO: Renamed 'tf.zeros_initializer' to 'tf.compat.v1.zeros_initializer'
+128:16: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+128:16: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+133:28: INFO: tf.zeros_initializer requires manual check. Initializers no longer have the dtype argument in the constructor or partition_info argument in the __call__ method.
+The calls have been converted to compat.v1 for safety (even though they may already have been correct).
+133:28: INFO: Renamed 'tf.zeros_initializer' to 'tf.compat.v1.zeros_initializer'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file './tokenization.py'
+ outputting to './v2/tokenization.py'
+--------------------------------------------------------------------------------
+
+129:9: INFO: Renamed 'tf.gfile.GFile' to 'tf.io.gfile.GFile'
+--------------------------------------------------------------------------------
+
