@@ -1,6 +1,11 @@
 # BERT for TensorFlow 2
 Re-implementation of [google-research/bert](https://github.com/google-research/bert) using TensorFlow 2.
 
+## Tasks completed
+
+1. Convert function-style model and layer definitions to object-style ones
+2. Use `argparse` instead of `tf.compat.v1.flags`
+
 ## References
 
 1. [TF2 Making new layers and models via subclassing](https://www.tensorflow.org/guide/keras/making_new_layers_and_models_via_subclassing)

@@ -1,83 +1,92 @@
-# coding=utf-8
-# Copyright 2018 The Google AI Language Team Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """Create masked LM/next sentence masked_lm TF examples for BERT."""
 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import argparse
 import collections
 import random
-import tokenization
+
 import tensorflow as tf
 
-flags = tf.compat.v1.flags
-
-FLAGS = flags.FLAGS
-
-flags.DEFINE_string(
-    "input_file", None, "Input raw text file (or comma-separated list of files)."
-)
-
-flags.DEFINE_string(
-    "output_file", None, "Output TF example file (or comma-separated list of files)."
-)
-
-flags.DEFINE_string(
-    "vocab_file", None, "The vocabulary file that the BERT model was trained on."
-)
-
-flags.DEFINE_bool(
-    "do_lower_case",
-    True,
-    "Whether to lower case the input text. Should be True for uncased "
-    "models and False for cased models.",
-)
-
-flags.DEFINE_bool(
-    "do_whole_word_mask",
-    False,
-    "Whether to use whole word masking rather than per-WordPiece masking.",
-)
-
-flags.DEFINE_integer("max_seq_length", 128, "Maximum sequence length.")
-
-flags.DEFINE_integer(
-    "max_predictions_per_seq",
-    20,
-    "Maximum number of masked LM predictions per sequence.",
-)
-
-flags.DEFINE_integer("random_seed", 12345, "Random seed for data generation.")
-
-flags.DEFINE_integer(
-    "dupe_factor",
-    10,
-    "Number of times to duplicate the input data (with different masks).",
-)
-
-flags.DEFINE_float("masked_lm_prob", 0.15, "Masked LM probability.")
-
-flags.DEFINE_float(
-    "short_seq_prob",
-    0.1,
-    "Probability of creating sequences which are shorter than the " "maximum length.",
-)
+import tokenization
 
 
-class TrainingInstance(object):
+def argparser():
+    ap = argparse.ArgumentParser(
+        "Create masked LM/next sentence masked_lm TF examples for BERT."
+    )
+
+    ap.add_argument(
+        "--input_file",
+        required=True,
+        type=str,
+        help="Input raw text file (or comma-separated list of files).",
+    )
+    ap.add_argument(
+        "--output_file",
+        required=True,
+        type=str,
+        help="Output TF example file (or comma-separated list of files).",
+    )
+    ap.add_argument(
+        "--vocab_file",
+        required=True,
+        type=str,
+        help="The vocabulary file that the BERT model was trained on.",
+    )
+    ap.add_argument(
+        "--max_seq_length", type=int, default=128, help="Maximum sequence length."
+    )
+
+    ap.add_argument(
+        "--do_lower_case",
+        action="store_true",
+        help="Whether to lower case the input text. Should be True for uncased "
+        "models and False for cased models.",
+    )
+    ap.add_argument(
+        "--do_whole_word_mask",
+        action="store_true",
+        help="Whether to use whole word masking rather than per-WordPiece masking.",
+    )
+
+    ap.add_argument(
+        "--max_predictions_per_seq",
+        type=int,
+        default=20,
+        help="Maximum number of masked LM predictions per sequence.",
+    )
+    ap.add_argument(
+        "--random_seed",
+        type=int,
+        default=12345,
+        help="Random seed for data generation.",
+    )
+    ap.add_argument(
+        "--dupe_factor",
+        type=int,
+        default=10,
+        help="Number of times to duplicate the input data (with different masks).",
+    )
+
+    ap.add_argument(
+        "--masked_lm_prob", type=float, default=0.15, help="Masked LM probability."
+    )
+
+    ap.add_argument(
+        "--short_seq_prob",
+        type=float,
+        default=0.1,
+        help="Probability of creating sequences which are shorter than the "
+        "maximum length.",
+    )
+
+    return ap
+
+
+class TrainingInstance:
     """A single training instance (sentence pair)."""
 
     def __init__(
@@ -404,7 +413,7 @@ def create_masked_lm_predictions(
         # at all -- we still predict each WordPiece independently, softmaxed
         # over the entire vocabulary.
         if (
-            FLAGS.do_whole_word_mask
+            args.do_whole_word_mask
             and len(cand_indexes) >= 1
             and token.startswith("##")
         ):
@@ -484,34 +493,34 @@ def truncate_seq_pair(tokens_a, tokens_b, max_num_tokens, rng):
             trunc_tokens.pop()
 
 
-def main(_):
+def main(args):
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
 
     tokenizer = tokenization.FullTokenizer(
-        vocab_file=FLAGS.vocab_file, do_lower_case=FLAGS.do_lower_case
+        vocab_file=args.vocab_file, do_lower_case=args.do_lower_case
     )
 
     input_files = []
-    for input_pattern in FLAGS.input_file.split(","):
+    for input_pattern in args.input_file.split(","):
         input_files.extend(tf.io.gfile.glob(input_pattern))
 
     tf.compat.v1.logging.info("*** Reading from input files ***")
     for input_file in input_files:
         tf.compat.v1.logging.info("  %s", input_file)
 
-    rng = random.Random(FLAGS.random_seed)
+    rng = random.Random(args.random_seed)
     instances = create_training_instances(
         input_files,
         tokenizer,
-        FLAGS.max_seq_length,
-        FLAGS.dupe_factor,
-        FLAGS.short_seq_prob,
-        FLAGS.masked_lm_prob,
-        FLAGS.max_predictions_per_seq,
+        args.max_seq_length,
+        args.dupe_factor,
+        args.short_seq_prob,
+        args.masked_lm_prob,
+        args.max_predictions_per_seq,
         rng,
     )
 
-    output_files = FLAGS.output_file.split(",")
+    output_files = args.output_file.split(",")
     tf.compat.v1.logging.info("*** Writing to output files ***")
     for output_file in output_files:
         tf.compat.v1.logging.info("  %s", output_file)
@@ -519,14 +528,14 @@ def main(_):
     write_instance_to_example_files(
         instances,
         tokenizer,
-        FLAGS.max_seq_length,
-        FLAGS.max_predictions_per_seq,
+        args.max_seq_length,
+        args.max_predictions_per_seq,
         output_files,
     )
 
 
 if __name__ == "__main__":
-    flags.mark_flag_as_required("input_file")
-    flags.mark_flag_as_required("output_file")
-    flags.mark_flag_as_required("vocab_file")
-    tf.compat.v1.app.run()
+    ap = argparser()
+    args = ap.parse_args()
+
+    main(args)

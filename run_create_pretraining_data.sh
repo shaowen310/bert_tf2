@@ -6,7 +6,7 @@ python create_pretraining_data.py \
   --input_file=./sample_text.txt \
   --output_file=./tmp/tf_examples.tfrecord \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
-  --do_lower_case=True \
+  --do_lower_case \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
