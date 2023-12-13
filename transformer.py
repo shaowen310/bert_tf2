@@ -1,19 +1,13 @@
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras import initializers
-from tensorflow.keras import activations
 
 from attention import MultiHeadAttention
 
 
-class TransformerSingleEncoder(layers.Layer):
+class TransformerSingleEncoder(tf.keras.layers.Layer):
     @staticmethod
     def create_input_mask_from_input(input_tensor):
-        dyn_shape = tf.shape(input_tensor)
-        batch_size = dyn_shape[0]
-        seq_length = dyn_shape[1]
-
-        return tf.ones(shape=[batch_size, seq_length], dtype=tf.int32)
+        # [B, SEQ]
+        return tf.ones(shape=tf.shape(input_tensor)[:2], dtype=tf.int32)
 
     @staticmethod
     def create_attention_mask_from_input_mask(from_tensor, to_mask):
@@ -26,25 +20,17 @@ class TransformerSingleEncoder(layers.Layer):
         Returns:
             float Tensor of shape [batch_size, from_seq_length, to_seq_length].
         """
-        dyn_from_shape = tf.shape(from_tensor)
-        batch_size = dyn_from_shape[0]
-        from_seq_length = dyn_from_shape[1]
 
-        dyn_to_shape = tf.shape(to_mask)
-        to_seq_length = dyn_to_shape[1]
-
-        to_mask = tf.cast(
-            tf.reshape(to_mask, [batch_size, 1, to_seq_length]), tf.float32
-        )
+        # [B, 1, T]
+        to_mask = tf.cast(tf.expand_dims(to_mask, axis=1), tf.float32)
 
         # We don't assume that `from_tensor` is a mask (although it could be). We
         # don't actually care if we attend *from* padding tokens (only *to* padding)
         # tokens so we create a tensor of all ones.
 
         # `broadcast_ones` = [batch_size, from_seq_length, 1]
-        broadcast_ones = tf.ones(
-            shape=[batch_size, from_seq_length, 1], dtype=tf.float32
-        )
+        broadcast_ones = tf.ones(shape=tf.shape(from_tensor)[:2], dtype=tf.float32)
+        broadcast_ones = tf.expand_dims(broadcast_ones, axis=2)
 
         # Here we broadcast along two dimensions to create the mask.
         mask = broadcast_ones * to_mask
@@ -56,7 +42,7 @@ class TransformerSingleEncoder(layers.Layer):
         hidden_size=768,
         num_attention_heads=12,
         intermediate_size=3072,
-        intermediate_act_fn=activations.gelu,
+        intermediate_act_fn=tf.keras.activations.gelu,
         attention_dropout=0.1,
         hidden_dropout=0.1,
         initializer_range=0.02,
@@ -86,25 +72,25 @@ class TransformerSingleEncoder(layers.Layer):
             name="self",
         )
 
-        self.layer_norm_att_out = layers.LayerNormalization(axis=-1)
+        self.layer_norm_att_out = tf.keras.layers.LayerNormalization(axis=-1)
 
-        self.dense_to_interim = layers.Dense(
+        self.dense_to_interim = tf.keras.layers.Dense(
             self.intermediate_size,
             activation=self.intermediate_act_fn,
-            kernel_initializer=initializers.TruncatedNormal(
+            kernel_initializer=tf.keras.initializers.TruncatedNormal(
                 stddev=self.initializer_range
             ),
             name="intermediate",
         )
-        self.dense_to_hidden = layers.Dense(
+        self.dense_to_hidden = tf.keras.layers.Dense(
             self.hidden_size,
-            kernel_initializer=initializers.TruncatedNormal(
+            kernel_initializer=tf.keras.initializers.TruncatedNormal(
                 stddev=self.initializer_range
             ),
             name="output",
         )
-        self.dropout_hidden = layers.Dropout(self.hidden_dropout)
-        self.layer_norm_out = layers.LayerNormalization(axis=-1)
+        self.dropout_hidden = tf.keras.layers.Dropout(self.hidden_dropout)
+        self.layer_norm_out = tf.keras.layers.LayerNormalization(axis=-1)
 
     def build(self, input_shape):
         input_width = input_shape[-1]
@@ -155,7 +141,9 @@ class TransformerSingleEncoder(layers.Layer):
         config = {
             "hidden_size": self.hidden_size,
             "intermediate_size": self.intermediate_size,
-            "intermediate_act_fn": activations.serialize(self.intermediate_act_fn),
+            "intermediate_act_fn": tf.keras.activations.serialize(
+                self.intermediate_act_fn
+            ),
             "hidden_dropout": self.hidden_dropout,
             "weight_initializer_range": self.initializer_range,
         }
@@ -163,7 +151,7 @@ class TransformerSingleEncoder(layers.Layer):
         return dict(list(base_config.items())) + list(config.items())
 
 
-class TransformerEncoder(layers.Layer):
+class TransformerEncoder(tf.keras.layers.Layer):
     """Multi-headed, multi-layer Transformer from "Attention is All You Need".
 
     This is almost an exact implementation of the original Transformer encoder.
@@ -185,7 +173,7 @@ class TransformerEncoder(layers.Layer):
         - intermediate_size: int. The size of the "intermediate" (a.k.a., feed forward) layer.
         - intermediate_act_fn: function. The non-linear activation function to apply
         to the output of the intermediate/feed-forward layer.
-        - hidden_dropout_prob: float. Dropout probability for the hidden layers.
+        - hidden_dropout_prob: float. Dropout probability for the hidden tf.keras.layers.
         - attention_probs_dropout_prob: float. Dropout probability of the attention probabilities.
         - initializer_range: float. Range of the initializer (stddev of truncated normal).
         - do_return_all_layers: Whether to also return all layers or just the final layer.
@@ -197,7 +185,7 @@ class TransformerEncoder(layers.Layer):
         num_hidden_layers=12,
         num_attention_heads=12,
         intermediate_size=3072,
-        intermediate_act_fn=activations.gelu,
+        intermediate_act_fn=tf.keras.activations.gelu,
         attention_dropout=0.1,
         hidden_dropout=0.1,
         initializer_range=0.02,

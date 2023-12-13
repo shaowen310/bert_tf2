@@ -102,8 +102,7 @@ class PositionalEmbedding(tf.keras.layers.Layer):
         if inputs.shape[-1] != self.embedding_size:
             raise ValueError("`inputs` width should be equal to `embedding_size`")
 
-        dyn_shape = tf.shape(inputs)
-        seq_length = dyn_shape[-2]
+        seq_length = tf.shape(inputs)[-2]
 
         assert_op = tf.debugging.assert_less_equal(
             seq_length, self.max_position_embeddings
