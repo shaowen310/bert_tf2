@@ -274,5 +274,4 @@ class MultiHeadAttention(tf.keras.layers.Layer):
             "value_activation": tf.keras.activations.serialize(self.value_act),
             "attention_dropout": self.attention_dropout,
         }
-        base_config = super().get_config()
-        return dict(list(base_config.items())) + list(config.items())
+        return dict(**super().get_config(), **config)

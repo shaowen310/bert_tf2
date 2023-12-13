@@ -45,9 +45,7 @@ class Embedding(tf.keras.layers.Layer):
             "embedding_size": self.embedding_size,
             "initializer_range": self.initializer_range,
         }
-
-        base_config = super().get_config()
-        return dict(list(base_config.items())) + list(config.items())
+        return dict(**super().get_config(), **config)
 
     def get_embedding_table(self):
         return self.embedding_table

@@ -147,8 +147,7 @@ class TransformerSingleEncoder(tf.keras.layers.Layer):
             "hidden_dropout": self.hidden_dropout,
             "weight_initializer_range": self.initializer_range,
         }
-        base_config = super().get_config()
-        return dict(list(base_config.items())) + list(config.items())
+        return dict(**super().get_config(), **config)
 
 
 class TransformerEncoder(tf.keras.layers.Layer):
@@ -237,5 +236,4 @@ class TransformerEncoder(tf.keras.layers.Layer):
     def get_config(self):
         config = {"num_hidden_layers": self.num_hidden_layers}
 
-        base_config = super().get_config()
-        return dict(list(base_config.items())) + list(config.items())
+        return dict(**super().get_config(), **config)
