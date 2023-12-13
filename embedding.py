@@ -37,7 +37,7 @@ class Embedding(tf.keras.layers.Layer):
         # [B, SEQ, EMB]
         output = tf.gather(self.embedding_table, inputs)
 
-        return (output, self.embedding_table)
+        return output
 
     def get_config(self):
         config = {
@@ -49,8 +49,11 @@ class Embedding(tf.keras.layers.Layer):
         base_config = super().get_config()
         return dict(list(base_config.items())) + list(config.items())
 
+    def get_embedding_table(self):
+        return self.embedding_table
 
-class PositionalEmbedding(tf.keras.layers.Layer):
+
+class PositionEmbedding(tf.keras.layers.Layer):
     """Appends positional embeddings to a word embedding tensor.
 
     Args:
@@ -130,6 +133,4 @@ class PositionalEmbedding(tf.keras.layers.Layer):
             position_embeddings = tf.reshape(
                 position_embeddings, position_broadcast_shape
             )
-            output = inputs + position_embeddings
-
-        return output
+            return inputs + position_embeddings
