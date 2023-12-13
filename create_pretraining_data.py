@@ -6,11 +6,14 @@ from __future__ import print_function
 
 import argparse
 import collections
+import logging
 import random
 
 import tensorflow as tf
 
 import tokenization
+
+logger = tf.get_logger()
 
 
 def argparser():
@@ -494,7 +497,7 @@ def truncate_seq_pair(tokens_a, tokens_b, max_num_tokens, rng):
 
 
 def main(args):
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
+    logger.setLevel(logging.INFO)
 
     tokenizer = tokenization.FullTokenizer(
         vocab_file=args.vocab_file, do_lower_case=args.do_lower_case
@@ -504,9 +507,9 @@ def main(args):
     for input_pattern in args.input_file.split(","):
         input_files.extend(tf.io.gfile.glob(input_pattern))
 
-    tf.compat.v1.logging.info("*** Reading from input files ***")
+    logger.info("*** Reading from input files ***")
     for input_file in input_files:
-        tf.compat.v1.logging.info("  %s", input_file)
+        logger.info("  %s", input_file)
 
     rng = random.Random(args.random_seed)
     instances = create_training_instances(
@@ -521,9 +524,9 @@ def main(args):
     )
 
     output_files = args.output_file.split(",")
-    tf.compat.v1.logging.info("*** Writing to output files ***")
+    logger.info("*** Writing to output files ***")
     for output_file in output_files:
-        tf.compat.v1.logging.info("  %s", output_file)
+        logger.info("  %s", output_file)
 
     write_instance_to_example_files(
         instances,
