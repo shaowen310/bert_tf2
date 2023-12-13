@@ -191,9 +191,9 @@ def write_instance_to_example_files(
 
         total_written += 1
 
-        if inst_index < 20:
-            tf.compat.v1.logging.info("*** Example ***")
-            tf.compat.v1.logging.info(
+        if inst_index < 5:
+            logger.info("*** Example ***")
+            logger.info(
                 "tokens: %s"
                 % " ".join([tokenization.printable_text(x) for x in instance.tokens])
             )
@@ -205,14 +205,14 @@ def write_instance_to_example_files(
                     values = feature.int64_list.value
                 elif feature.float_list.value:
                     values = feature.float_list.value
-                tf.compat.v1.logging.info(
+                logger.info(
                     "%s: %s" % (feature_name, " ".join([str(x) for x in values]))
                 )
 
     for writer in writers:
         writer.close()
 
-    tf.compat.v1.logging.info("Wrote %d total instances", total_written)
+    logger.info("Wrote %d total instances", total_written)
 
 
 def create_int_feature(values):
