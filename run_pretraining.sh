@@ -2,7 +2,7 @@ source conf.sh
 
 BERT_BASE_DIR=$(pwd)
 
-python run_pretraining.py \
+python run_pretrainingv2.py \
   --input_file=/tmp/tf_examples.tfrecord \
   --output_dir=/tmp/pretraining_output \
   --do_train=True \

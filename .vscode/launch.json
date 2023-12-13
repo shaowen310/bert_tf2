@@ -16,7 +16,7 @@
             "name": "Python: run_pretraining.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/run_pretraining.py",
+            "program": "${workspaceFolder}/run_pretrainingv2.py",
             "console": "integratedTerminal",
             "args": [
                 "--input_file=./tmp/tf_examples.tfrecord",
