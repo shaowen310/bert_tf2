@@ -40,11 +40,11 @@ class Embedding(tf.keras.layers.Layer):
         return output
 
     def get_config(self):
-        config = {
-            "vocab_size": self.vocab_size,
-            "embedding_size": self.embedding_size,
-            "initializer_range": self.initializer_range,
-        }
+        config = dict(
+            vocab_size=self.vocab_size,
+            embedding_size=self.embedding_size,
+            initializer_range=self.initializer_range,
+        )
         return dict(**super().get_config(), **config)
 
     def get_embedding_table(self):

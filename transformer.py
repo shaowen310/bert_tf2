@@ -138,15 +138,15 @@ class TransformerSingleEncoder(tf.keras.layers.Layer):
         return layer_output
 
     def get_config(self):
-        config = {
-            "hidden_size": self.hidden_size,
-            "intermediate_size": self.intermediate_size,
-            "intermediate_act_fn": tf.keras.activations.serialize(
+        config = dict(
+            hidden_size=self.hidden_size,
+            intermediate_size=self.intermediate_size,
+            intermediate_act_fn=tf.keras.activations.serialize(
                 self.intermediate_act_fn
             ),
-            "hidden_dropout": self.hidden_dropout,
-            "weight_initializer_range": self.initializer_range,
-        }
+            hidden_dropout=self.hidden_dropout,
+            weight_initializer_range=self.initializer_range,
+        )
         return dict(**super().get_config(), **config)
 
 
@@ -234,6 +234,8 @@ class TransformerEncoder(tf.keras.layers.Layer):
             return final_output
 
     def get_config(self):
-        config = {"num_hidden_layers": self.num_hidden_layers}
+        config = dict(
+            num_hidden_layers=self.num_hidden_layers,
+        )
 
         return dict(**super().get_config(), **config)

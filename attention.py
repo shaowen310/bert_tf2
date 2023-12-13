@@ -265,13 +265,13 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         return context_layer
 
     def get_config(self):
-        config = {
-            "num_attention_heads": self.num_attention_heads,
-            "size_per_head": self.size_per_head,
-            "weight_initializer_range": self.initializer_range,
-            "query_activation": tf.keras.activations.serialize(self.query_act),
-            "key_activation": tf.keras.activations.serialize(self.key_act),
-            "value_activation": tf.keras.activations.serialize(self.value_act),
-            "attention_dropout": self.attention_dropout,
-        }
+        config = dict(
+            num_attention_heads=self.num_attention_heads,
+            size_per_head=self.size_per_head,
+            weight_initializer_range=self.initializer_range,
+            query_activation=tf.keras.activations.serialize(self.query_act),
+            key_activation=tf.keras.activations.serialize(self.key_act),
+            value_activation=tf.keras.activations.serialize(self.value_act),
+            attention_dropout=self.attention_dropout,
+        )
         return dict(**super().get_config(), **config)
