@@ -144,7 +144,6 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self,
         inputs: List[tf.Tensor],
         attention_mask: Optional[tf.Tensor] = None,
-        training=None,
         do_return_2d_tensor=False,
         batch_size=None,
         from_seq_length=None,
@@ -230,7 +229,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         # `attention_probs` = [B, N, F, T]
         attention_probs = tf.nn.softmax(attention_scores)
 
-        attention_probs = self.dropout_layer(attention_probs, training=training)
+        attention_probs = self.dropout_layer(attention_probs)
 
         # [B, T, N*H] -> [B, N, T, H]
         value = tf.reshape(

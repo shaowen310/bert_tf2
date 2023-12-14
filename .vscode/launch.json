@@ -16,7 +16,7 @@
             "name": "Python: run_pretraining.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/run_pretrainingv2.py",
+            "program": "${workspaceFolder}/run_pretraining.py",
             "console": "integratedTerminal",
             "args": [
                 "--input_file=./tmp/tf_examples.tfrecord",
@@ -25,7 +25,7 @@
                 "--do_eval=True",
                 "--bert_config_file=./bert_config.json",
                 // "--init_checkpoint=./checkpoint/bert_model.ckpt",
-                "--train_batch_size=32",
+                "--train_batch_size=8",
                 "--max_seq_length=128",
                 "--max_predictions_per_seq=20",
                 "--num_train_steps=20",

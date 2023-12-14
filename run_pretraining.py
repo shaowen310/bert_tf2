@@ -26,7 +26,7 @@ import modeling
 import optimization
 import tensorflow as tf
 
-from bert import Bert
+from bert import BertModel
 
 flags = tf.compat.v1.flags
 
@@ -161,12 +161,13 @@ def model_fn_builder(
 
         is_training = mode == tf.estimator.ModeKeys.TRAIN
 
-        model = modeling.BertModel(
-            config=bert_config,
-            is_training=is_training,
-            input_ids=input_ids,
+        model = BertModel(**bert_config.to_dict())
+
+        model(
+            input_ids,
             input_mask=input_mask,
             token_type_ids=segment_ids,
+            training=is_training,
         )
 
         (
@@ -176,7 +177,7 @@ def model_fn_builder(
         ) = get_masked_lm_output(
             bert_config,
             model.get_sequence_output(),
-            model.get_embedding_table(),
+            model.get_word_embedding_table(),
             masked_lm_positions,
             masked_lm_ids,
             masked_lm_weights,
@@ -487,7 +488,7 @@ def main(_):
     if not FLAGS.do_train and not FLAGS.do_eval:
         raise ValueError("At least one of `do_train` or `do_eval` must be True.")
 
-    bert_config = modeling.BertConfig.from_json_file(FLAGS.bert_config_file)
+    bert_config = modeling.ModelConfig.from_json_file(FLAGS.bert_config_file)
 
     tf.io.gfile.makedirs(FLAGS.output_dir)
 
