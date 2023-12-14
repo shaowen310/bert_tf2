@@ -59,16 +59,16 @@ def get_activation(activation_string):
     """Maps a string to a Python function, e.g., "relu" => `tf.nn.relu`.
 
     Args:
-      activation_string: String name of the activation function.
+        activation_string: String name of the activation function.
 
     Returns:
-      A Python function corresponding to the activation function. If
-      `activation_string` is None, empty, or "linear", this will return None.
-      If `activation_string` is not a string, it will return `activation_string`.
+        A Python function corresponding to the activation function. If
+        `activation_string` is None, empty, or "linear", this will return None.
+        If `activation_string` is not a string, it will return `activation_string`.
 
     Raises:
-      ValueError: The `activation_string` does not correspond to a known
-        activation.
+        ValueError: The `activation_string` does not correspond to a known
+            activation.
     """
 
     # We assume that anything that"s not a string is already an activation
@@ -134,16 +134,16 @@ def get_shape_list(tensor, expected_rank=None, name=None):
     """Returns a list of the shape of tensor, preferring static dimensions.
 
     Args:
-      tensor: A tf.Tensor object to find the shape of.
-      expected_rank: (optional) int. The expected rank of `tensor`. If this is
-        specified and the `tensor` has a different rank, and exception will be
-        thrown.
-      name: Optional name of the tensor for the error message.
+        tensor: A tf.Tensor object to find the shape of.
+        expected_rank: (optional) int. The expected rank of `tensor`. If this is
+            specified and the `tensor` has a different rank, and exception will be
+            thrown.
+        name: Optional name of the tensor for the error message.
 
     Returns:
-      A list of dimensions of the shape of tensor. All static dimensions will
-      be returned as python integers, and dynamic dimensions will be returned
-      as tf.Tensor scalars.
+        A list of dimensions of the shape of tensor. All static dimensions will
+        be returned as python integers, and dynamic dimensions will be returned
+        as tf.Tensor scalars.
     """
     if name is None:
         name = tensor.name
@@ -171,12 +171,12 @@ def assert_rank(tensor, expected_rank, name=None):
     """Raises an exception if the tensor rank is not of the expected rank.
 
     Args:
-      tensor: A tf.Tensor to check the rank of.
-      expected_rank: Python integer or list of integers, expected rank.
-      name: Optional name of the tensor for the error message.
+        tensor: A tf.Tensor to check the rank of.
+        expected_rank: Python integer or list of integers, expected rank.
+        name: Optional name of the tensor for the error message.
 
     Raises:
-      ValueError: If the expected shape doesn't match the actual shape.
+        ValueError: If the expected shape doesn't match the actual shape.
     """
     if name is None:
         name = tensor.name

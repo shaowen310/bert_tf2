@@ -8,16 +8,15 @@ def get_activation(activation_string):
     """Maps a string to a Python function, e.g., "relu" => `tf.nn.relu`.
 
     Args:
-      activation_string: String name of the activation function.
+        activation_string: String name of the activation function.
 
     Returns:
-      A Python function corresponding to the activation function. If
-      `activation_string` is None, empty, or "linear", this will return None.
-      If `activation_string` is not a string, it will return `activation_string`.
+        A Python function corresponding to the activation function. If
+        `activation_string` is None, empty, or "linear", this will return None.
+        If `activation_string` is not a string, it will return `activation_string`.
 
     Raises:
-      ValueError: The `activation_string` does not correspond to a known
-        activation.
+        ValueError: The `activation_string` does not correspond to a known activation.
     """
 
     # We assume that anything that"s not a string is already an activation
@@ -151,26 +150,26 @@ class BertModel(tf.keras.Model):
         """Constructs BertConfig.
 
         Args:
-          vocab_size: Vocabulary size of `inputs_ids` in `BertModel`.
-          hidden_size: Size of the encoder layers and the pooler layer.
-          num_hidden_layers: Number of hidden layers in the Transformer encoder.
-          num_attention_heads: Number of attention heads for each attention layer in
-            the Transformer encoder.
-          intermediate_size: The size of the "intermediate" (i.e., feed-forward)
-            layer in the Transformer encoder.
-          hidden_act: The non-linear activation function (function or string) in the
-            encoder and pooler.
-          hidden_dropout_prob: The dropout probability for all fully connected
-            layers in the embeddings, encoder, and pooler.
-          attention_probs_dropout_prob: The dropout ratio for the attention
-            probabilities.
-          max_position_embeddings: The maximum sequence length that this model might
-            ever be used with. Typically set this to something large just in case
-            (e.g., 512 or 1024 or 2048).
-          type_vocab_size: The vocabulary size of the `token_type_ids` passed into
-            `BertModel`.
-          initializer_range: The stdev of the truncated_normal_initializer for
-            initializing all weight matrices.
+            vocab_size: Vocabulary size of `inputs_ids` in `BertModel`.
+            hidden_size: Size of the encoder layers and the pooler layer.
+            num_hidden_layers: Number of hidden layers in the Transformer encoder.
+            num_attention_heads: Number of attention heads for each attention layer in
+                the Transformer encoder.
+            intermediate_size: The size of the "intermediate" (i.e., feed-forward)
+                layer in the Transformer encoder.
+            hidden_act: The non-linear activation function (function or string) in the
+                encoder and pooler.
+            hidden_dropout_prob: The dropout probability for all fully connected
+                layers in the embeddings, encoder, and pooler.
+            attention_probs_dropout_prob: The dropout ratio for the attention
+                probabilities.
+            max_position_embeddings: The maximum sequence length that this model might
+                ever be used with. Typically set this to something large just in case
+                (e.g., 512 or 1024 or 2048).
+            type_vocab_size: The vocabulary size of the `token_type_ids` passed into
+                `BertModel`.
+            initializer_range: The stdev of the truncated_normal_initializer for
+                initializing all weight matrices.
         """
         super().__init__(**kwargs)
 
@@ -222,16 +221,16 @@ class BertModel(tf.keras.Model):
         """Constructor for BertModel.
 
         Args:
-          config: `BertConfig` instance.
-          is_training: bool. true for training model, false for eval model. Controls
-            whether dropout will be applied.
-          input_ids: int32 Tensor of shape [batch_size, seq_length].
-          input_mask: (optional) int32 Tensor of shape [batch_size, seq_length].
-          token_type_ids: (optional) int32 Tensor of shape [batch_size, seq_length].
+            config: `BertConfig` instance.
+            is_training: bool. true for training model, false for eval model. Controls
+                whether dropout will be applied.
+            input_ids: int32 Tensor of shape [batch_size, seq_length].
+            input_mask: (optional) int32 Tensor of shape [batch_size, seq_length].
+            token_type_ids: (optional) int32 Tensor of shape [batch_size, seq_length].
 
         Raises:
-          ValueError: The config is invalid or one of the input tensor shapes
-            is invalid.
+            ValueError: The config is invalid or one of the input tensor shapes
+                is invalid.
         """
         embedding_output = self.bert_embedding(inputs, token_type_ids=token_type_ids)
 
@@ -265,8 +264,8 @@ class BertModel(tf.keras.Model):
         """Gets final hidden layer of encoder.
 
         Returns:
-          float Tensor of shape [batch_size, seq_length, hidden_size] corresponding
-          to the final hidden of the transformer encoder.
+            float Tensor of shape [batch_size, seq_length, hidden_size] corresponding
+            to the final hidden of the transformer encoder.
         """
         return self.sequence_output
 
