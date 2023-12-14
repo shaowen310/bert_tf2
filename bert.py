@@ -1,6 +1,3 @@
-import copy
-import json
-
 import tensorflow as tf
 
 from embedding import Embedding, PositionEmbedding
