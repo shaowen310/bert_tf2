@@ -15,6 +15,7 @@
 #
 # Modifications by shaowen310
 # 1. Remove TPU support
+# 2. Replace tf.compat.v1.flags with argparse
 """Run masked LM/next sentence masked_lm pre-training for BERT."""
 
 from __future__ import absolute_import

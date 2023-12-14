@@ -120,10 +120,10 @@ class BertModel(tf.keras.Model):
     token_type_ids = tf.constant([[0, 0, 1], [0, 2, 0]])
 
     config = modeling.BertConfig(vocab_size=32000, hidden_size=512,
-      num_hidden_layers=8, num_attention_heads=6, intermediate_size=1024)
+    num_hidden_layers=8, num_attention_heads=6, intermediate_size=1024)
 
     model = modeling.BertModel(config=config, is_training=True,
-      input_ids=input_ids, input_mask=input_mask, token_type_ids=token_type_ids)
+    input_ids=input_ids, input_mask=input_mask, token_type_ids=token_type_ids)
 
     label_embeddings = tf.get_variable(...)
     pooled_output = model.get_pooled_output()
