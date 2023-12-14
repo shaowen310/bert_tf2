@@ -1,6 +1,17 @@
 # BERT for TensorFlow 2
 Re-implementation of [google-research/bert](https://github.com/google-research/bert) using TensorFlow 2.
 
+## Dependencies
+
+```bash
+## Linux
+# https://www.tensorflow.org/install/pip#linux
+# According to https://www.tensorflow.org/install/source#gpu
+# install CUDA 12.2 and its respective drivers or use nvidia container
+conda install -c conda-forge cudatoolkit=11.8 cudnn=8.9
+conda install -c conda-forge tensorflow=2.14
+```
+
 ## Tasks completed
 
 1. Convert function-style model and layer definitions to object-style ones
