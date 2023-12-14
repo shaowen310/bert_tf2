@@ -5,16 +5,16 @@ class Embedding(tf.keras.layers.Layer):
     """Looks up words embeddings for id tensor.
 
     Args:
-      input_ids: int32 Tensor of shape [batch_size, seq_length] containing word ids.
-      vocab_size: int. Size of the embedding vocabulary.
-      embedding_size: int. Width of the word embeddings.
-      initializer_range: float. Embedding initialization range.
-      word_embedding_name: string. Name of the embedding table.
-      use_one_hot_embeddings: bool. If True, use one-hot method for word
-        embeddings. If False, use `tf.gather()`.
+        input_ids: int32 Tensor of shape [batch_size, seq_length] containing word ids.
+        vocab_size: int. Size of the embedding vocabulary.
+        embedding_size: int. Width of the word embeddings.
+        initializer_range: float. Embedding initialization range.
+        word_embedding_name: string. Name of the embedding table.
+        use_one_hot_embeddings: bool. If True, use one-hot method for word
+          embeddings. If False, use `tf.gather()`.
 
     Returns:
-      float Tensor of shape [batch_size, seq_length, embedding_size].
+        float Tensor of shape [batch_size, seq_length, embedding_size].
     """
 
     def __init__(
@@ -55,28 +55,28 @@ class PositionEmbedding(tf.keras.layers.Layer):
     """Appends positional embeddings to a word embedding tensor.
 
     Args:
-      input_tensor: float Tensor of shape [batch_size, seq_length, embedding_size].
-      use_token_type: bool. Whether to add embeddings for `token_type_ids`.
-      token_type_ids: (optional) int32 Tensor of shape [batch_size, seq_length].
-        Must be specified if `use_token_type` is True.
-      token_type_vocab_size: int. The vocabulary size of `token_type_ids`.
-      token_type_embedding_name: string. The name of the embedding table variable
-        for token type ids.
-      use_position_embeddings: bool. Whether to add position embeddings for the
-        position of each token in the sequence.
-      position_embedding_name: string. The name of the embedding table variable
-        for positional embeddings.
-      initializer_range: float. Range of the weight initialization.
-      max_position_embeddings: int. Maximum sequence length that might ever be
-        used with this model. This can be longer than the sequence length of
-        input_tensor, but cannot be shorter.
-      dropout_prob: float. Dropout probability applied to the final output tensor.
+        input_tensor: float Tensor of shape [batch_size, seq_length, embedding_size].
+        use_token_type: bool. Whether to add embeddings for `token_type_ids`.
+        token_type_ids: (optional) int32 Tensor of shape [batch_size, seq_length].
+            Must be specified if `use_token_type` is True.
+        token_type_vocab_size: int. The vocabulary size of `token_type_ids`.
+        token_type_embedding_name: string. The name of the embedding table variable
+            for token type ids.
+        use_position_embeddings: bool. Whether to add position embeddings for the
+            position of each token in the sequence.
+        position_embedding_name: string. The name of the embedding table variable
+            for positional embeddings.
+        initializer_range: float. Range of the weight initialization.
+        max_position_embeddings: int. Maximum sequence length that might ever be
+            used with this model. This can be longer than the sequence length of
+            input_tensor, but cannot be shorter.
+        dropout_prob: float. Dropout probability applied to the final output tensor.
 
     Returns:
-      float tensor with same shape as `input_tensor`.
+        float tensor with same shape as `input_tensor`.
 
     Raises:
-      ValueError: One of the tensor shapes or input values is invalid.
+        ValueError: One of the tensor shapes or input values is invalid.
     """
 
     def __init__(
