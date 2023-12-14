@@ -11,7 +11,7 @@ class Embedding(tf.keras.layers.Layer):
         initializer_range: float. Embedding initialization range.
         word_embedding_name: string. Name of the embedding table.
         use_one_hot_embeddings: bool. If True, use one-hot method for word
-          embeddings. If False, use `tf.gather()`.
+            embeddings. If False, use `tf.gather()`.
 
     Returns:
         float Tensor of shape [batch_size, seq_length, embedding_size].
