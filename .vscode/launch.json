@@ -21,8 +21,8 @@
             "args": [
                 "--input_file=./tmp/tf_examples.tfrecord",
                 "--output_dir=./tmp/pretraining_output",
-                "--do_train=True",
-                "--do_eval=True",
+                "--do_train",
+                "--do_eval",
                 "--bert_config_file=./bert_config.json",
                 // "--init_checkpoint=./checkpoint/bert_model.ckpt",
                 "--train_batch_size=8",
