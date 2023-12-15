@@ -12,6 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Comment
+# 1. Should not use tf2 Adam optimizer with `global_step`, otherwise
+# the variable may not be initialized.
 """Functions and classes related to optimization (weight updates)."""
 
 from __future__ import absolute_import
