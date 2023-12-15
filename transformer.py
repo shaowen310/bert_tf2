@@ -102,7 +102,7 @@ class TransformerSingleEncoder(tf.keras.layers.Layer):
                 f"The width of the input tensor ({input_width}) != hidden size ({self.hidden_size})"
             )
 
-    def call(self, inputs, input_mask=None, training=None, seq_length=None, **kwargs):
+    def call(self, inputs, input_mask=None, seq_length=None, **kwargs):
         # [B, SEQ, HID]
         layer_input = inputs
 
@@ -118,7 +118,6 @@ class TransformerSingleEncoder(tf.keras.layers.Layer):
         attention_output = self.attention(
             [layer_input, layer_input],
             attention_mask=attention_mask,
-            training=training,
             from_seq_length=seq_length,
             to_seq_length=seq_length,
             **kwargs,
@@ -132,7 +131,7 @@ class TransformerSingleEncoder(tf.keras.layers.Layer):
 
         # Down-project back to `hidden_size` then add the residual.
         layer_output = self.dense_to_hidden(intermediate_output)
-        layer_output = self.dropout_hidden(layer_output, training=training)
+        layer_output = self.dropout_hidden(layer_output)
         layer_output = self.layer_norm_out(attention_output + layer_output)
 
         return layer_output
