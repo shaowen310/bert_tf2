@@ -145,7 +145,6 @@ def model_fn_builder(
     num_train_steps,
     num_warmup_steps,
     use_tpu,
-    use_one_hot_embeddings,
 ):
     """Returns `model_fn` closure for TPUEstimator."""
 
@@ -201,23 +200,13 @@ def model_fn_builder(
         tvars = tf.compat.v1.trainable_variables()
 
         initialized_variable_names = {}
-        scaffold_fn = None
         if init_checkpoint:
             (
                 assignment_map,
                 initialized_variable_names,
             ) = modeling.get_assignment_map_from_checkpoint(tvars, init_checkpoint)
-            if use_tpu:
 
-                def tpu_scaffold():
-                    tf.compat.v1.train.init_from_checkpoint(
-                        init_checkpoint, assignment_map
-                    )
-                    return tf.compat.v1.train.Scaffold()
-
-                scaffold_fn = tpu_scaffold
-            else:
-                tf.compat.v1.train.init_from_checkpoint(init_checkpoint, assignment_map)
+            tf.compat.v1.train.init_from_checkpoint(init_checkpoint, assignment_map)
 
         logger.info("**** Trainable Variables ****")
         for var in tvars:
@@ -233,7 +222,7 @@ def model_fn_builder(
             )
 
             output_spec = tf.compat.v1.estimator.tpu.TPUEstimatorSpec(
-                mode=mode, loss=total_loss, train_op=train_op, scaffold_fn=scaffold_fn
+                mode=mode, loss=total_loss, train_op=train_op
             )
         elif mode == tf.estimator.ModeKeys.EVAL:
 
@@ -299,10 +288,7 @@ def model_fn_builder(
                 ],
             )
             output_spec = tf.compat.v1.estimator.tpu.TPUEstimatorSpec(
-                mode=mode,
-                loss=total_loss,
-                eval_metrics=eval_metrics,
-                scaffold_fn=scaffold_fn,
+                mode=mode, loss=total_loss, eval_metrics=eval_metrics
             )
         else:
             raise ValueError("Only TRAIN and EVAL modes are supported: %s" % (mode))
@@ -501,7 +487,6 @@ def main(args):
         num_train_steps=args.num_train_steps,
         num_warmup_steps=args.num_warmup_steps,
         use_tpu=False,
-        use_one_hot_embeddings=False,
     )
 
     # If TPU is not available, this will fall back to normal Estimator on CPU or GPU.
