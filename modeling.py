@@ -55,43 +55,6 @@ class ModelConfig:
         return json.dumps(self.to_dict(), indent=2, sort_keys=True) + "\n"
 
 
-def get_activation(activation_string):
-    """Maps a string to a Python function, e.g., "relu" => `tf.nn.relu`.
-
-    Args:
-        activation_string: String name of the activation function.
-
-    Returns:
-        A Python function corresponding to the activation function. If
-        `activation_string` is None, empty, or "linear", this will return None.
-        If `activation_string` is not a string, it will return `activation_string`.
-
-    Raises:
-        ValueError: The `activation_string` does not correspond to a known
-            activation.
-    """
-
-    # We assume that anything that"s not a string is already an activation
-    # function, so we just return it.
-    if not isinstance(activation_string, six.string_types):
-        return activation_string
-
-    if not activation_string:
-        return None
-
-    act = activation_string.lower()
-    if act == "linear":
-        return None
-    elif act == "relu":
-        return tf.nn.relu
-    elif act == "gelu":
-        return lambda features: tf.nn.gelu(features, approximate=True)
-    elif act == "tanh":
-        return tf.tanh
-    else:
-        raise ValueError("Unsupported activation: %s" % act)
-
-
 def get_assignment_map_from_checkpoint(tvars, init_checkpoint):
     """Compute the union of the current variables and checkpoint variables."""
     assignment_map = {}

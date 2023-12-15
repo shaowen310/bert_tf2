@@ -28,6 +28,7 @@ import modeling
 import optimization
 import tensorflow as tf
 
+import bert
 from bert import BertModel
 from adaptor import NextSentencePrediction
 
@@ -323,7 +324,7 @@ def get_masked_lm_output(
             input_tensor = tf.compat.v1.layers.dense(
                 input_tensor,
                 units=bert_config.hidden_size,
-                activation=modeling.get_activation(bert_config.hidden_act),
+                activation=bert.get_activation(bert_config.hidden_act),
                 kernel_initializer=modeling.create_initializer(
                     bert_config.initializer_range
                 ),

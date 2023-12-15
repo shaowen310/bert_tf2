@@ -1,3 +1,5 @@
+import functools
+
 import tensorflow as tf
 
 from embedding import Embedding, PositionEmbedding
@@ -33,7 +35,7 @@ def get_activation(activation_string):
     elif act == "relu":
         return tf.nn.relu
     elif act == "gelu":
-        return lambda features: tf.nn.gelu(features, approximate=True)
+        return functools.partial(tf.nn.gelu, approximate=True)
     elif act == "tanh":
         return tf.tanh
     else:
