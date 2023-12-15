@@ -410,23 +410,19 @@ def input_fn_builder(
 
         # For training, we want a lot of parallel reading and shuffling.
         # For eval, we want no shuffling and parallel reading doesn't matter.
-        # Since we evaluate for a fixed number of steps we don't want to encounter
-        # out-of-range exceptions.
-        # TODO support parallel reading
+        # TODO support parallel reading when training
         d = tf.data.TFRecordDataset(input_files)
-        d = d.repeat()
+
         if is_training:
             d = d.shuffle(buffer_size=256)
 
-        # We must `drop_remainder` on training because the TPU requires fixed
-        # size dimensions. For eval, we assume we are evaluating on the CPU or GPU
-        # and we *don't* want to drop the remainder, otherwise we wont cover
-        # every sample.
         d = d.map(
             functools.partial(_decode_record, name_to_features=name_to_features),
             num_parallel_calls=num_cpu_threads,
         )
-        d = d.batch(batch_size, drop_remainder=True)
+
+        d = d.batch(batch_size)
+
         return d
 
     return input_fn
