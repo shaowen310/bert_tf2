@@ -29,6 +29,9 @@ import optimization
 import tensorflow as tf
 
 from bert import BertModel
+from adaptor import NextSentencePrediction
+
+logger = tf.get_logger()
 
 
 def argparser():
@@ -147,11 +150,9 @@ def model_fn_builder(
     def model_fn(features, labels, mode, params):  # pylint: disable=unused-argument
         """The `model_fn` for TPUEstimator."""
 
-        tf.compat.v1.logging.info("*** Features ***")
+        logger.info("*** Features ***")
         for name in sorted(features.keys()):
-            tf.compat.v1.logging.info(
-                "  name = %s, shape = %s" % (name, features[name].shape)
-            )
+            logger.info("  name = %s, shape = %s" % (name, features[name].shape))
 
         input_ids = features["input_ids"]
         input_mask = features["input_mask"]
@@ -216,14 +217,12 @@ def model_fn_builder(
             else:
                 tf.compat.v1.train.init_from_checkpoint(init_checkpoint, assignment_map)
 
-        tf.compat.v1.logging.info("**** Trainable Variables ****")
+        logger.info("**** Trainable Variables ****")
         for var in tvars:
             init_string = ""
             if var.name in initialized_variable_names:
                 init_string = ", *INIT_FROM_CKPT*"
-            tf.compat.v1.logging.info(
-                "  name = %s, shape = %s%s", var.name, var.shape, init_string
-            )
+            logger.info("  name = %s, shape = %s%s", var.name, var.shape, init_string)
 
         output_spec = None
         if mode == tf.estimator.ModeKeys.TRAIN:
@@ -364,26 +363,22 @@ def get_masked_lm_output(
 def get_next_sentence_output(bert_config, input_tensor, labels):
     """Get loss and log probs for the next sentence prediction."""
 
-    # Simple binary classification. Note that 0 is "next sentence" and 1 is
-    # "random sentence". This weight matrix is not used after pre-training.
-    with tf.compat.v1.variable_scope("cls/seq_relationship"):
-        output_weights = tf.compat.v1.get_variable(
-            "output_weights",
-            shape=[2, bert_config.hidden_size],
-            initializer=modeling.create_initializer(bert_config.initializer_range),
-        )
-        output_bias = tf.compat.v1.get_variable(
-            "output_bias", shape=[2], initializer=tf.compat.v1.zeros_initializer()
-        )
+    next_sentence_logit = NextSentencePrediction(
+        initializer_range=bert_config.initializer_range,
+        name="cls/seq_relationship",
+    )
 
-        logits = tf.matmul(input_tensor, output_weights, transpose_b=True)
-        logits = tf.nn.bias_add(logits, output_bias)
-        log_probs = tf.nn.log_softmax(logits, axis=-1)
-        labels = tf.reshape(labels, [-1])
-        one_hot_labels = tf.one_hot(labels, depth=2, dtype=tf.float32)
-        per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
-        loss = tf.reduce_mean(per_example_loss)
-        return (loss, per_example_loss, log_probs)
+    logits = next_sentence_logit(input_tensor)
+
+    log_probs = tf.nn.log_softmax(logits, axis=-1)
+
+    labels = tf.reshape(labels, [-1])
+    one_hot_labels = tf.one_hot(labels, depth=2, dtype=tf.float32)
+    per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
+
+    loss = tf.reduce_mean(per_example_loss)
+
+    return (loss, per_example_loss, log_probs)
 
 
 def gather_indexes(sequence_tensor, positions):
@@ -485,7 +480,7 @@ def _decode_record(record, name_to_features):
 
 
 def main(args):
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
+    logger.setLevel(tf._logging.INFO)
 
     if not args.do_train and not args.do_eval:
         raise ValueError("At least one of `do_train` or `do_eval` must be True.")
@@ -498,9 +493,9 @@ def main(args):
     for input_pattern in args.input_file.split(","):
         input_files.extend(tf.io.gfile.glob(input_pattern))
 
-    tf.compat.v1.logging.info("*** Input Files ***")
+    logger.info("*** Input Files ***")
     for input_file in input_files:
-        tf.compat.v1.logging.info("  %s" % input_file)
+        logger.info("  %s" % input_file)
 
     tpu_cluster_resolver = None
 
@@ -537,8 +532,8 @@ def main(args):
     )
 
     if args.do_train:
-        tf.compat.v1.logging.info("***** Running training *****")
-        tf.compat.v1.logging.info("  Batch size = %d", args.train_batch_size)
+        logger.info("***** Running training *****")
+        logger.info("  Batch size = %d", args.train_batch_size)
         train_input_fn = input_fn_builder(
             input_files=input_files,
             max_seq_length=args.max_seq_length,
@@ -548,8 +543,8 @@ def main(args):
         estimator.train(input_fn=train_input_fn, max_steps=args.num_train_steps)
 
     if args.do_eval:
-        tf.compat.v1.logging.info("***** Running evaluation *****")
-        tf.compat.v1.logging.info("  Batch size = %d", args.eval_batch_size)
+        logger.info("***** Running evaluation *****")
+        logger.info("  Batch size = %d", args.eval_batch_size)
 
         eval_input_fn = input_fn_builder(
             input_files=input_files,
@@ -562,9 +557,9 @@ def main(args):
 
         output_eval_file = os.path.join(args.output_dir, "eval_results.txt")
         with tf.io.gfile.GFile(output_eval_file, "w") as writer:
-            tf.compat.v1.logging.info("***** Eval results *****")
+            logger.info("***** Eval results *****")
             for key in sorted(result.keys()):
-                tf.compat.v1.logging.info("  %s = %s", key, str(result[key]))
+                logger.info("  %s = %s", key, str(result[key]))
                 writer.write("%s = %s\n" % (key, str(result[key])))
 
 

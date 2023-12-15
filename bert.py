@@ -244,6 +244,7 @@ class BertModel(tf.keras.Model):
 
         sequence_output = all_encoder_layers[-1]
 
+        # [B, 1, HID]
         first_token_tensor = tf.squeeze(sequence_output[:, 0:1, :], axis=1)
         pooled_output = self.sequence_pool(first_token_tensor)
 
