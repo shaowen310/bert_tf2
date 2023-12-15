@@ -31,7 +31,7 @@ import tensorflow as tf
 
 import bert
 from bert import BertModel
-from adaptor import NextSentencePrediction
+from adapter import NextSentencePrediction
 
 logger = tf.get_logger()
 
