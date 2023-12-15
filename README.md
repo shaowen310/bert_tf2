@@ -4,19 +4,24 @@ Re-implementation of [google-research/bert](https://github.com/google-research/b
 ## Dependencies
 
 ```bash
-## Linux
+## Linux native
 # https://www.tensorflow.org/install/pip#linux
 # According to https://www.tensorflow.org/install/source#gpu
-# install CUDA 12.2 and its respective drivers or use nvidia container
+# for tf 2.14, install CUDA 12.2 and its respective drivers and
+# recommend using conda environment to setup cudatoolkit and cudnn
 conda install -c conda-forge cudatoolkit=11.8 cudnn=8.9
 conda install -c conda-forge tensorflow=2.14
+
+## NVIDIA container
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+# nvcr.io/nvidia/tensorflow:23.10-tf2-py3
+docker build -t berttrain .
 ```
 
 ## Tasks completed
 
 1. Convert function-style model and layer definitions to object-style ones
 2. Use `argparse` instead of `tf.compat.v1.flags`
-
 
 ## Tasks TODO
 
