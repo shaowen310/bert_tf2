@@ -3,8 +3,8 @@ source conf.sh
 BERT_BASE_DIR=$(pwd)
 
 python run_pretrainingv2.py \
-  --input_file=/tmp/tf_examples.tfrecord \
-  --output_dir=/tmp/pretraining_output \
+  --input_file=$BERT_BASE_DIR/tmp/tf_examples.tfrecord \
+  --output_dir=$BERT_BASE_DIR/tmp/pretraining_output \
   --do_train \
   --do_eval \
   --bert_config_file=$BERT_BASE_DIR/bert_config.json \

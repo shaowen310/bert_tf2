@@ -26,3 +26,6 @@ conda install -c conda-forge tensorflow=2.14
 
 1. [TF2 Making new layers and models via subclassing](https://www.tensorflow.org/guide/keras/making_new_layers_and_models_via_subclassing)
 2. [TF2 Customizing model saving and serialization](https://www.tensorflow.org/guide/keras/customizing_saving_and_serialization)
+3. [TFRecords for Humans](https://planspace.org/20170323-tfrecords_for_humans/)
+4. [TFRecordDataset](https://www.tensorflow.org/api_docs/python/tf/data/TFRecordDataset)
+5. [How to train a Keras model on TFRecord files](https://keras.io/examples/keras_recipes/tfrecord/)
