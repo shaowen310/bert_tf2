@@ -20,12 +20,14 @@ docker build -t berttrain .
 
 ## Tasks completed
 
-1. Convert function-style model and layer definitions to object-style ones
-2. Use `argparse` instead of `tf.compat.v1.flags`
+1. Convert function-style model and layer definitions to object-style ones.
+2. Replace `tf.compat.v1.flags` with `argparse`.
+3. Replace tf1 logger with tf2 logger.
 
 ## Tasks TODO
 
-1. Use `keras` API instead of `estimator` API
+1. Allow model saving and loading.
+2. Use `keras` API instead of `estimator` API.
 
 ## References
 
