@@ -423,30 +423,13 @@ def input_fn_builder(
 
         # For training, we want a lot of parallel reading and shuffling.
         # For eval, we want no shuffling and parallel reading doesn't matter.
-        # TODO Fix parallel reading
-        # if is_training:
-        #     d = tf.data.Dataset.from_tensor_slices(tf.constant(input_files))
-        #     d = d.repeat()
-        #     d = d.shuffle(buffer_size=len(input_files))
-
-        #     # `cycle_length` is the number of parallel files that get read.
-        #     cycle_length = min(num_cpu_threads, len(input_files))
-
-        #     # `sloppy` mode means that the interleaving is not exact. This adds
-        #     # even more randomness to the training pipeline.
-        #     d = d.apply(
-        #         tf.data.experimental.parallel_interleave(
-        #             tf.data.TFRecordDataset,
-        #             sloppy=is_training,
-        #             cycle_length=cycle_length,
-        #         )
-        #     )
-        #     d = d.shuffle(buffer_size=100)
-        # else:
-        d = tf.data.TFRecordDataset(input_files)
         # Since we evaluate for a fixed number of steps we don't want to encounter
         # out-of-range exceptions.
+        # TODO support parallel reading
+        d = tf.data.TFRecordDataset(input_files)
         d = d.repeat()
+        if is_training:
+            d = d.shuffle(buffer_size=256)
 
         # We must `drop_remainder` on training because the TPU requires fixed
         # size dimensions. For eval, we assume we are evaluating on the CPU or GPU
