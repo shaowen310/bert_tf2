@@ -17,6 +17,11 @@ conda install -c conda-forge tensorflow=2.14
 1. Convert function-style model and layer definitions to object-style ones
 2. Use `argparse` instead of `tf.compat.v1.flags`
 
+
+## Tasks TODO
+
+1. Use `keras` API instead of `estimator` API
+
 ## References
 
 1. [TF2 Making new layers and models via subclassing](https://www.tensorflow.org/guide/keras/making_new_layers_and_models_via_subclassing)
