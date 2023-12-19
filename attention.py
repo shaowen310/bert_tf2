@@ -56,7 +56,8 @@ class MultiHeadAttention(tf.keras.layers.Layer):
 
     Returns:
         float Tensor of shape [batch_size, from_seq_length, num_attention_heads * size_per_head].
-        (If `do_return_2d_tensor` is true, this will be of shape [batch_size * from_seq_length, num_attention_heads * size_per_head]).
+        (If `do_return_2d_tensor` is true, this will be of shape
+        [batch_size * from_seq_length, num_attention_heads * size_per_head]).
 
     Raises:
         ValueError: Any of the arguments or tensor shapes are invalid.
@@ -188,24 +189,19 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         # [B, T, TW] -> [B, T, N*H]
         value = self.value_layer(to_tensor)
 
-        # [B, SEQ, N*H] -> [B, N, SEQ, H]
-        def transpose_for_scores(input_tensor, seq_length):
-            output_shape = [
-                batch_size,
-                seq_length,
-                self.num_attention_heads,
-                self.size_per_head,
-            ]
-            output_tensor = tf.reshape(
-                input_tensor,
-                output_shape,
-            )
-            return tf.transpose(output_tensor, perm=[0, 2, 1, 3])
-
         # [B, F, N*H] -> [B, N, F, H]
-        query = transpose_for_scores(query, from_seq_length)
+        query = tf.reshape(
+            query,
+            [batch_size, from_seq_length, self.num_attention_heads, self.size_per_head],
+        )
+        query = tf.transpose(query, perm=[0, 2, 1, 3])
+
         # [B, T, N*H] -> [B, N, T, H]
-        key = transpose_for_scores(key, to_seq_length)
+        key = tf.reshape(
+            key,
+            [batch_size, to_seq_length, self.num_attention_heads, self.size_per_head],
+        )
+        key = tf.transpose(key, perm=[0, 2, 1, 3])
 
         # Take the dot product between "query" and "key" to get the raw attention scores.
         # `attention_scores` = [B, N, F, T]
