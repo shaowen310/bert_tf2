@@ -18,6 +18,29 @@ conda install -c conda-forge tensorflow=2.14
 docker build -t berttrain .
 ```
 
+## Training and evaluation
+
+```bash
+# native
+bash run_pretraining.sh
+# docker
+bash run_docker_pretraining.sh
+```
+
+## Keras modules
+
+`attention.py`: MultiHeadAttention
+
+`transformer.py`: TransformerEncoder
+
+`bert.py`: BertModel
+
+`embedding.py`: BertEmbedding, PositionEmbedding, WordEmbedding
+
+## TFRecordDataset
+
+TFRecordDataset is byte storage. We need to map the records by schema when using the dataset. Refer to `dataset_study_jupy.py` for details.
+
 ## Tasks completed
 
 1. Convert function-style model and layer definitions to object-style ones.
